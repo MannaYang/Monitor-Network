@@ -2,6 +2,7 @@ package com.manna.monitor.report.markdown
 
 import android.util.Log
 import com.manna.monitor.room.export.HttpDataEntity
+import com.manna.monitor.stone.http.GsonProvider
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -16,7 +17,10 @@ object MarkdownProvider {
         Log.d("Monitor", "Generate markdown content starting")
         val contentList = mutableListOf<String>()
         val headerStr = generateHeader(dataList)
-        Log.d("Monitor", "Generate markdown header content : $headerStr")
+        Log.d(
+            "Monitor",
+            "Generate markdown header content : ${GsonProvider.gson.toJson(headerStr)}"
+        )
         val groups = dataList.groupBy { it.url }
         val builderList = mutableListOf<MarkdownBuilder>()
         groups.forEach { (url, dataList) ->
@@ -27,16 +31,25 @@ object MarkdownProvider {
                 builderList.add(builder)
             }
             val urlContent = generateUrl(url, dataList)
-            Log.d("Monitor", "Generate markdown api url content : $urlContent")
+            Log.d(
+                "Monitor",
+                "Generate markdown api url content : ${GsonProvider.gson.toJson(urlContent)}"
+            )
             builder.append(urlContent)
             //按时间轴添加请求信息
             dataList.sortedBy { it.createTime }.forEach { data ->
                 val responseContent = generateResponse(data)
-                Log.d("Monitor", "Generate markdown response content : $responseContent")
+                Log.d(
+                    "Monitor",
+                    "Generate markdown response content : ${GsonProvider.gson.toJson(responseContent)}"
+                )
                 builder.append(responseContent)
             }
             val countContent = generateCount(dataList)
-            Log.d("Monitor", "Generate markdown count content : $countContent")
+            Log.d(
+                "Monitor",
+                "Generate markdown count content : ${GsonProvider.gson.toJson(countContent)}"
+            )
             builder.append(countContent)
         }
         //Sealed content list - String

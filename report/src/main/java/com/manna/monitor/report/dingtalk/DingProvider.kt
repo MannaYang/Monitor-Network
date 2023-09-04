@@ -23,7 +23,7 @@ class DingProvider {
             if (token.isEmpty() || System.currentTimeMillis() > expiredTime) {
                 Log.d("Monitor", "Report token is empty or expired")
                 val data = DingRepository.instance.getAccessToken()
-                Log.d("Monitor", "Get access token : $data")
+                Log.d("Monitor", "Get access token")
                 token = data?.get("accessToken")?.asString ?: ""
                 val expired = data?.get("expireIn")?.asLong ?: 0L
                 Log.d("Monitor", "Cache access token and expired time")

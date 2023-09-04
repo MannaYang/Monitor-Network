@@ -8,6 +8,7 @@ import com.manna.monitor.room.db.HttpDataDao
 import com.manna.monitor.room.export.HttpDataEntity
 import com.manna.monitor.room.export.HttpDataManage
 import com.manna.monitor.room.export.QueryFilter
+import com.manna.monitor.stone.http.GsonProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,7 +24,7 @@ class HttpDataManage : HttpDataManage {
     private val httpDataJob = CoroutineScope(Dispatchers.IO)
 
     override fun insert(data: HttpDataEntity) {
-        Log.d("Monitor", "Starting insert data : \n$data")
+        Log.d("Monitor", "Starting insert data : \n${GsonProvider.gson.toJson(data)}")
         val result = HttpDataDaoProvider.mappingToTable(data)
         httpDataJob.launch {
             httpDataDao.insert(result)
@@ -61,7 +62,7 @@ class HttpDataManage : HttpDataManage {
 
     override fun deleteList(dataList: MutableList<HttpDataEntity>) {
         if (dataList.isEmpty()) return
-        Log.d("Monitor", "Starting delete data list : $dataList")
+        Log.d("Monitor", "Starting delete data list : ${GsonProvider.gson.toJson(dataList)}")
         val result = mutableListOf<HttpData>().apply {
             dataList.forEach {
                 if (it.id != null) {
@@ -189,7 +190,7 @@ class HttpDataManage : HttpDataManage {
                 add(data)
             }
         }
-        Log.d("Monitor", "Finished query custom sql result : $result")
+        Log.d("Monitor", "Finished query custom sql result : ${GsonProvider.gson.toJson(result)}")
         return result
     }
 }

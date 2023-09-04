@@ -7,6 +7,7 @@ import com.manna.monitor.http.export.HttpDataResult
 import com.manna.monitor.http.export.HttpInterceptorListener
 import com.manna.monitor.room.export.HttpDataEntity
 import com.manna.monitor.room.export.HttpDataManage
+import com.manna.monitor.stone.http.GsonProvider
 import java.util.ServiceLoader
 
 @AutoService(HttpInterceptorListener::class)
@@ -15,7 +16,7 @@ class HttpInterceptor : HttpInterceptorListener {
     private val loaderProxy by lazy { ServiceLoader.load(HttpDataManage::class.java) }
 
     override fun onIntercept(httpData: HttpDataResult) {
-        Log.d("Monitor", "Intercept Okhttp request data : \n$httpData")
+        Log.d("Monitor", "Intercept Okhttp request data : \n${GsonProvider.gson.toJson(httpData)}")
         loaderProxy.first().insert(sealRoomData(httpData))
     }
 
