@@ -36,7 +36,6 @@ object MarkdownProvider {
                 "Generate markdown api url content : ${GsonProvider.gson.toJson(urlContent)}"
             )
             builder.append(urlContent)
-            //按时间轴添加请求信息
             dataList.sortedBy { it.createTime }.forEach { data ->
                 val responseContent = generateResponse(data)
                 Log.d(

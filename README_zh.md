@@ -91,6 +91,54 @@ implementation(project(":report-export"))
 
 具体调用方法在[MainActivity.kt]与[HttpInterceptor.kt]，应用内BaseApplication应替换为项目实际使用类
 
+## 使用说明
+
+项目中为了演示效果采用钉钉上报，因此需要申请企业应用AppKey/SecretKey/AgentId/进行鉴权以，通过以上key信息获取UserIds完成消息推送通知，
+实际应用中推荐上报到日志中台或相关日志平台，作为全链路监控的一环
+> 钉钉开放平台 > https://open.dingtalk.com/
+
+> gradle.properties
+> 需配置以下内容,关联影响鉴权方法位置 : [DingRepository.kt](report%2Fsrc%2Fmain%2Fjava%2Fcom%2Fmanna%2Fmonitor%2Freport%2Fdingtalk%2FDingRepository.kt)
+
+```
+# Ding key config
+dingAppKey=
+dingSecretKey=
+dingAgentId=
+dingUsersId=
+```
+
+实际调用代码示例
+> [DingProvider.kt](report%2Fsrc%2Fmain%2Fjava%2Fcom%2Fmanna%2Fmonitor%2Freport%2Fdingtalk%2FDingProvider.kt)
+
+```
+suspend fun reportWorkSpace(title: String, content: String, success: (Boolean) -> Unit) {
+  ...
+  ...
+  ...
+}
+```
+
+> 可自定义DataServerProvider.kt ，处理实际数据上报平台
+
+```
+suspend fun reportDataServer(title: String, content: String, success: (Boolean) -> Unit) {
+   //do something
+}
+
+suspend fun reportDataOther(title: String, content: String, success: (Boolean) -> Unit) {
+   //do something
+}
+```
+
+演示效果截图[screenshot](screenshot)
+
+![example.png](screenshot%2Fexample.png)
+
+![insert-room.png](screenshot%2Finsert-room.png)
+
+![report.png](screenshot%2Freport.png)
+
 ## ServiceLoader
 
 基于@AutoService注解生成的metadata可在各自组件build目录查看，例如:
@@ -162,3 +210,10 @@ class ServiceLoaderProxy {
 }
 ```
 
+## 引用三方库
+
+1. Google JetPacks > https://developer.android.com/jetpack
+2. Kotlin Coroutines > https://github.com/Kotlin/kotlinx.coroutines
+3. Retrofit & Okhttp > https://github.com/square/retrofit & https://github.com/square/okhttp
+4. Gson > https://github.com/google/gson
+5. auto-service > https://github.com/google/auto/tree/main/service
