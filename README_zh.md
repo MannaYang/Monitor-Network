@@ -131,7 +131,7 @@ suspend fun reportDataOther(title: String, content: String, success: (Boolean) -
 }
 ```
 
-演示效果截图[screenshot](screenshot)
+演示效果截图 [screenshot](screenshot)
 
 ![example.png](screenshot%2Fexample.png)
 
